@@ -1,4 +1,4 @@
-from src.schemas import CitySchema, WeatherSchema, AQISchema, HolidaySchema, DailyMetricSchema
+from src.schemas import CitySchema, RawWeatherSchema, RawAQISchema, HolidaySchema, WeatherSchema, AQISchema, DailyMetricSchema
 from pydantic import ValidationError
 from src.logging_config import logger
 
@@ -11,14 +11,14 @@ def validate_city(data):
 
 def validate_weather(data):
     try:
-        return WeatherSchema(**data)
+        return RawWeatherSchema(**data)
     except ValidationError as e:
         logger.error(e)
         return None
 
 def validate_aqi(data):
     try:
-        return AQISchema(**data)
+        return RawAQISchema(**data)
     except ValidationError as e:
         logger.error(e)
         return None
@@ -33,6 +33,20 @@ def validate_holiday(data):
 def validate_metric(data):
     try:
         return DailyMetricSchema(**data)
+    except ValidationError as e:
+        logger.error(e)
+        return None
+    
+def validate_weather_record(data):
+    try:
+        return WeatherSchema(**data)
+    except ValidationError as e:
+        logger.error(e)
+        return None
+
+def validate_aqi_record(data):
+    try:
+        return AQISchema(**data)
     except ValidationError as e:
         logger.error(e)
         return None

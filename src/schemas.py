@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from pydantic import Field
 from pydantic import field_validator
 from datetime import date
 
@@ -11,13 +10,11 @@ class CitySchema(BaseModel):
     population: int | None = None
     timezone: str | None = None
 
-class WeatherSchema(BaseModel):
-    date: date
+class RawWeatherSchema(BaseModel):
     temperature: float
     humidity: float
     wind_speed: float
     precipitation: float
-    condition: str
 
     @field_validator("humidity")
     def validate_humidity(cls, value):
@@ -31,18 +28,21 @@ class WeatherSchema(BaseModel):
             raise ValueError("Unrealistic temperature")
         return value
 
-class AQISchema(BaseModel):
-    date: date
-    aqi: int
+class RawAQISchema(BaseModel):
     pm25: float
     pm10: float
     o3: float
     no2: float
 
-    @field_validator("aqi")
-    def validate_aqi(cls, value):
+    @field_validator(
+        "pm25",
+        "pm10",
+        "o3",
+        "no2"
+    )
+    def validate_pollution(cls, value):
         if value < 0:
-            raise ValueError("AQI cannot be negative")
+            raise ValueError("Pollution values cannot be negative")
         return value
     
 class HolidaySchema(BaseModel):
@@ -51,7 +51,26 @@ class HolidaySchema(BaseModel):
     holiday_name: str
     is_national: bool
 
+class WeatherSchema(BaseModel):
+    city_id: int
+    date: date
+    temperature: float
+    humidity: float
+    wind_speed: float
+    precipitation: float
+    condition: str | None = None
+
+class AQISchema(BaseModel):
+    city_id: int
+    date: date
+    aqi: int | None = None
+    pm25: float
+    pm10: float
+    o3: float
+    no2: float
+
 class DailyMetricSchema(BaseModel):
+    city_id: int
     date: date
     weather_score: float
     aqi_score: float
