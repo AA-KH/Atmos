@@ -26,12 +26,9 @@ class AirQualityClient(BaseClient):
         current = data["current"]
 
         return {
-            "pm25":
-                current["pm2_5"],
-            "pm10":
-                current["pm10"],
-            "o3":
-                current["ozone"],
-            "no2":
-                current["nitrogen_dioxide"]
+            "observation_time": current["time"],
+            "pm25": current["pm2_5"],
+            "pm10": current["pm10"],
+            "o3": current["ozone"],
+            "no2": current["nitrogen_dioxide"]
         }

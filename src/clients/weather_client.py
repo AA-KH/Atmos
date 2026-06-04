@@ -29,15 +29,9 @@ class WeatherClient(BaseClient):
         current = data["current"]
 
         return {
-            "temperature":
-                current["temperature_2m"],
-
-            "humidity":
-                current["relative_humidity_2m"],
-
-            "wind_speed":
-                current["wind_speed_10m"],
-
-            "precipitation":
-                current["precipitation"]
+            "observation_time": current["time"],
+            "temperature": current["temperature_2m"],
+            "humidity": current["relative_humidity_2m"],
+            "wind_speed": current["wind_speed_10m"],
+            "precipitation": current["precipitation"]
         }

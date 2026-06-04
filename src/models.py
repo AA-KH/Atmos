@@ -11,6 +11,15 @@ from src.database import Base
 class City(Base):
     __tablename__ = "cities"
 
+    def __repr__(self):
+        return (
+            f"City("
+            f"id={self.id}, "
+            f"name='{self.city_name}', "
+            f"country='{self.country}'"
+            f")"
+        )
+
     id = Column(Integer, primary_key=True)
     city_name = Column(String, nullable=False)
     country = Column(String)
@@ -26,6 +35,15 @@ class City(Base):
 class Weather(Base):
     __tablename__ = "weather"
 
+    def __repr__(self):
+        return (
+        f"Weather("
+        f"city_id={self.city_id}, "
+        f"date={self.date}, "
+        f"temp={self.temperature}"
+        f")"
+        )
+
     id = Column(Integer, primary_key=True)
     city_id = Column(Integer, ForeignKey("cities.id"))
     date = Column(Date)
@@ -38,6 +56,16 @@ class Weather(Base):
 
 class AirQuality(Base):
     __tablename__ = "air_quality"
+
+    def __repr__(self):
+
+        return (
+        f"AirQuality("
+        f"city_id={self.city_id}, "
+        f"date={self.date}, "
+        f"aqi={self.aqi}"
+        f")"
+    )
 
     id = Column(Integer, primary_key=True)
     city_id = Column(Integer, ForeignKey("cities.id"))
@@ -60,6 +88,15 @@ class Holiday(Base):
 
 class DailyMetric(Base):
     __tablename__ = "daily_metrics"
+
+    def __repr__(self):
+
+        return (
+        f"DailyMetric("
+        f"city_id={self.city_id}, "
+        f"score={self.readiness_score}"
+        f")"
+        )
 
     id = Column(Integer, primary_key=True)
     city_id = Column(Integer, ForeignKey("cities.id"))

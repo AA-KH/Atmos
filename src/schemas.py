@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from pydantic import field_validator
-from datetime import date
+from datetime import date, datetime
+
 
 class CitySchema(BaseModel):
     city_name: str
@@ -11,6 +12,7 @@ class CitySchema(BaseModel):
     timezone: str | None = None
 
 class RawWeatherSchema(BaseModel):
+    observation_time: datetime
     temperature: float
     humidity: float
     wind_speed: float
@@ -29,6 +31,7 @@ class RawWeatherSchema(BaseModel):
         return value
 
 class RawAQISchema(BaseModel):
+    observation_time: datetime
     pm25: float
     pm10: float
     o3: float
