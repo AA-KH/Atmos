@@ -82,8 +82,9 @@ def export_metrics():
         metrics = session.query(DailyMetric).all()
         data = []
         for metric in metrics:
+            city = session.query(City).filter_by(id=metric.city_id).first()
             data.append({
-                "city_id": metric.city_id,
+                "city_name": city.city_name if city else "Unknown",
                 "date": metric.date,
                 "weather_score": metric.weather_score,
                 "aqi_score": metric.aqi_score,

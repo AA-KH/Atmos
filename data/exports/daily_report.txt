@@ -1,0 +1,22 @@
+=== DATAPULSE DAILY REPORT ===
+
+City: Delhi
+Readiness Score: 78.0
+Risk Level: MODERATE
+
+City: Mumbai
+Readiness Score: 100.0
+Risk Level: LOW
+
+City: Tokyo
+Readiness Score: 94.0
+Risk Level: LOW
+
+City: London
+Readiness Score: 100.0
+Risk Level: LOW
+
+City: Paris
+Readiness Score: 100.0
+Risk Level: LOW
+

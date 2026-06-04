@@ -1,0 +1,6 @@
+id,city_name,country,latitude,longitude,population,timezone
+1,Delhi,IN,28.65195,77.23149,,Asia/Kolkata
+2,Mumbai,IN,19.07283,72.88261,,Asia/Kolkata
+3,Tokyo,JP,35.6895,139.69171,,Asia/Tokyo
+4,London,GB,51.50853,-0.12574,,Europe/London
+5,Paris,FR,48.85341,2.3488,,Europe/Paris

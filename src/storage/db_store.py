@@ -50,10 +50,13 @@ def insert_aqi(aqi_data):
     try:
         existing = session.query(AirQuality).filter_by(city_id=aqi_data["city_id"],date=aqi_data["date"]).first()
         if existing:
+            logger.info("AQI already exists")
             return
         aqi = AirQuality(**aqi_data)
         session.add(aqi)
         session.commit()
+
+        logger.info("AQI inserted")
 
     except Exception as e:
         session.rollback()
