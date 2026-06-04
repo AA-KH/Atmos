@@ -4,6 +4,8 @@ from src.pipeline.pipeline_manager import run_default_pipeline
 from src.analytics.export_manager import export_all
 from src.analytics.report_generator import generate_daily_report
 from src.analytics.query_metrics import get_latest_metrics
+from src.monitoring.stats import get_pipeline_stats
+from src.monitoring.history import get_recent_runs
 
 app = typer.Typer()
 @app.command()
@@ -42,3 +44,25 @@ def metrics():
 @app.command()
 def health():
     print("DataPulse Operational")
+
+@app.command()
+def stats():
+    stats = get_pipeline_stats()
+    print()
+    print(f"Total Runs: {stats['total_runs']}")
+    print(f"Successful Runs: {stats['successful_runs']}")
+    print(f"Failed Runs: {stats['failed_runs']}")
+    print()
+
+@app.command()
+def history():
+    runs = get_recent_runs()
+    print()
+
+    for run in runs:
+        print(
+            f"{run.city_name} | "
+            f"{run.status} | "
+            f"{round(run.duration_seconds, 2)}s"
+        )
+    print()

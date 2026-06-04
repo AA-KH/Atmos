@@ -7,6 +7,8 @@ from sqlalchemy import Boolean
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from src.database import Base
+from sqlalchemy import DateTime
+from datetime import datetime
 
 class City(Base):
     __tablename__ = "cities"
@@ -106,3 +108,17 @@ class DailyMetric(Base):
     readiness_score = Column(Float)
     risk_level = Column(String)
     city = relationship("City", back_populates="metrics")
+
+class PipelineRun(Base):
+    __tablename__ = "pipeline_runs"
+    id = Column(Integer, primary_key=True)
+    city_name = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    duration_seconds = Column(Float)
+    status = Column(String)
+    records_processed = Column(Integer)
+    error_message = Column(String, nullable=True)
+    
+    def __repr__(self):
+        return f"PipelineRun(city='{self.city_name}', status='{self.status}')"
