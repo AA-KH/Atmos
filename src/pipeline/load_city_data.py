@@ -6,6 +6,7 @@ from src.transforms.weather_transform import transform_weather
 from src.transforms.aqi_transform import transform_aqi
 from src.storage.db_store import insert_city, insert_weather, insert_aqi
 from src.logging_config import logger
+from src.analytics.metric_generator import generate_metrics
 
 def run_pipeline(city_name):
 
@@ -47,6 +48,7 @@ def run_pipeline(city_name):
             return
 
         insert_aqi(aqi_record.model_dump())
+        generate_metrics(city_id)
         logger.info(f"Pipeline completed successfully for {city_name}")
 
     except Exception as e:
