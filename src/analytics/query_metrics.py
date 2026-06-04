@@ -6,6 +6,5 @@ def get_latest_metrics():
 
     try:
         return session.query(DailyMetric).all()
-
     finally:
         session.close()
