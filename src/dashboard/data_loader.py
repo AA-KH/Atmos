@@ -11,3 +11,11 @@ def load_aqi():
 
 def load_cities():
     return pd.read_csv("data/exports/cities.csv")
+
+def load_all_data():
+    return {
+        "metrics": load_metrics(),
+        "weather": load_weather(),
+        "aqi": load_aqi(),
+        "cities": load_cities()
+    }

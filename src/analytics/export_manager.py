@@ -33,9 +33,11 @@ def export_weather():
     try:
         weather_records = session.query(Weather).all()
         data = []
+
         for weather in weather_records:
+            city = session.query(City).filter_by(id=weather.city_id).first()
             data.append({
-                "city_id": weather.city_id,
+                "city_name": city.city_name if city else "Unknown",
                 "date": weather.date,
                 "temperature": weather.temperature,
                 "humidity": weather.humidity,
@@ -58,8 +60,9 @@ def export_aqi():
         records = session.query(AirQuality).all()
         data = []
         for record in records:
+            city = session.query(City).filter_by(id=record.city_id).first()
             data.append({
-                "city_id": record.city_id,
+                "city_name": city.city_name if city else "Unknown",
                 "date": record.date,
                 "aqi": record.aqi,
                 "pm25": record.pm25,
