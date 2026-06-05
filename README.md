@@ -374,7 +374,7 @@ Provides direct access to exported datasets.
 ## Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/AA-KH/Atmos
 cd Atmos
 ```
 
