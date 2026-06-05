@@ -12,4 +12,4 @@ logging.basicConfig(
     ]
 )
 
-logger = logging.getLogger("DataPulse")
+logger = logging.getLogger("Atmos")

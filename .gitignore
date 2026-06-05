@@ -3,4 +3,4 @@
 __pycache__/
 *.pyc
 logs/
-datapulse.db
+atmos.db

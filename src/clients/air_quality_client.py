@@ -11,7 +11,8 @@ class AirQualityClient(BaseClient):
                 "pm10",
                 "pm2_5",
                 "nitrogen_dioxide",
-                "ozone"
+                "ozone",
+                "us_aqi"
             ]
         }
 
@@ -27,6 +28,7 @@ class AirQualityClient(BaseClient):
 
         return {
             "observation_time": current["time"],
+            "aqi": current["us_aqi"],
             "pm25": current["pm2_5"],
             "pm10": current["pm10"],
             "o3": current["ozone"],

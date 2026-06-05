@@ -45,7 +45,7 @@ def metrics():
 
 @app.command()
 def health():
-    print("DataPulse Operational")
+    print("Atmos Operational")
 
 @app.command()
 def stats():

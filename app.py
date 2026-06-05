@@ -8,10 +8,10 @@ from src.analytics.export_manager import export_all
 from src.dashboard.data_loader import load_all_data
 
 st.set_page_config(
-    page_title="DataPulse",
-    page_icon="🌍",
+    page_title="Atmos",
     layout="wide"
 )
+st.cache_data.clear()
 
 data = load_all_data()
 metrics_df = data["metrics"]
@@ -19,7 +19,7 @@ weather_df = data["weather"]
 aqi_df = data["aqi"]
 cities_df = data["cities"]
 
-st.sidebar.title("🌍 DataPulse")
+st.sidebar.title("Atmos")
 st.sidebar.caption("City Intelligence Platform")
 
 page = st.sidebar.selectbox(
@@ -33,7 +33,7 @@ page = st.sidebar.selectbox(
 )
 
 st.sidebar.divider()
-st.sidebar.subheader("🔍 Search City")
+st.sidebar.subheader("Search City")
 
 city_search = st.sidebar.text_input("City Name", placeholder="Berlin")
 
@@ -57,7 +57,7 @@ if st.sidebar.button("Fetch City Data"):
 
 if page == "Overview":
 
-    st.title("🌍 DataPulse")
+    st.title("Atmos")
     st.subheader("Global City Intelligence Dashboard")
     col1, col2, col3, col4 = st.columns(4)
 
@@ -75,7 +75,7 @@ if page == "Overview":
 
     with left:
 
-        st.subheader("🏆 City Readiness Rankings")
+        st.subheader("City Readiness Rankings")
 
         latest_metrics = (metrics_df.sort_values("date").groupby("city_name").tail(1))
 
@@ -97,35 +97,41 @@ if page == "Overview":
 
     with right:
 
-        st.subheader("⚠ Risk Distribution")
+        st.subheader("Risk Distribution")
         risk_counts = metrics_df["risk_level"].value_counts()
-        st.bar_chart(risk_counts)
+        risk_chart = pd.DataFrame({
+            "Risk Level": risk_counts.index, 
+            "Count": risk_counts.values
+        })
+        st.bar_chart(risk_chart.set_index("Risk Level"),height=440)
 
     st.divider()
     col1, col2 = st.columns(2)
 
     with col1:
 
-        st.subheader("🌤 Weather Score Comparison")
+        st.subheader("Weather Score Comparison")
         weather_chart = latest_metrics.set_index("city_name")["weather_score"]
         st.bar_chart(weather_chart)
 
     with col2:
 
-        st.subheader("🌫 AQI Score Comparison")
+        st.subheader("AQI Score Comparison")
         aqi_chart = latest_metrics.set_index("city_name")["aqi_score"]
         st.bar_chart(aqi_chart)
 
 elif page == "City Explorer":
 
-    st.title("🏙 City Explorer")
+    st.title("City Explorer")
     cities = sorted(cities_df["city_name"].unique())
     selected_city = st.selectbox("Select City", cities)
 
     city_metric = metrics_df[metrics_df["city_name"] == selected_city]
     city_weather = weather_df[weather_df["city_name"] == selected_city]
     city_aqi = aqi_df[aqi_df["city_name"] == selected_city]
-    latest = city_metric.iloc[-1]
+    latest = city_metric.sort_values("date").iloc[-1]
+    latest_weather = city_weather.sort_values("date").iloc[-1]
+    latest_aqi = city_aqi.sort_values("date").iloc[-1]
 
     col1, col2, col3 = st.columns(3)
 
@@ -136,7 +142,7 @@ elif page == "City Explorer":
         st.metric("Weather Score",latest["weather_score"])
 
     with col3:
-        st.metric("AQI Score",latest["aqi_score"])
+        st.metric("AQI", latest_aqi["aqi"])
 
     st.divider()
     risk = latest["risk_level"]
@@ -150,13 +156,60 @@ elif page == "City Explorer":
     else:
         st.error(f"Risk Level: {risk}")
 
+    st.divider()
 
-    st.subheader("City Metrics")
-    st.dataframe(city_metric,use_container_width=True)
+    st.subheader("Current Weather Conditions")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("Temperature", f"{latest_weather['temperature']}°C")
+
+    with col2:
+        st.metric("Humidity",f"{latest_weather['humidity']}%"   )
+
+    with col3:
+        st.metric("Wind Speed",f"{latest_weather['wind_speed']} km/h")
+
+    with col4:
+        st.metric("Precipitation",f"{latest_weather['precipitation']} mm")
+
+    st.divider()
+    st.subheader("Air Quality Details")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("AQI",latest_aqi["aqi"])
+
+    with col2:
+        st.metric("PM2.5",latest_aqi["pm25"])
+
+    with col3:
+        st.metric("PM10",latest_aqi["pm10"])
+
+    with col4:
+        st.metric("NO₂",latest_aqi["no2"])
+
+    st.divider()
+    tab1, tab2, tab3 = st.tabs([
+        "Metrics History",
+        "Weather History",
+        "AQI History"]
+    )
+
+    with tab1:
+        st.dataframe(city_metric,use_container_width=True)
+
+    with tab2:
+        st.dataframe(city_weather,use_container_width=True)
+
+    with tab3:
+        st.dataframe(city_aqi,use_container_width=True)
 
 elif page == "Pipeline Monitoring":
 
-    st.title("⚙ Pipeline Monitoring")
+    st.title("Pipeline Monitoring")
     stats = get_pipeline_stats()
     col1, col2, col3 = st.columns(3)
 
@@ -207,7 +260,7 @@ elif page == "Pipeline Monitoring":
 
 elif page == "Data Explorer":
 
-    st.title("📊 Data Explorer")
+    st.title("Data Explorer")
     dataset = st.selectbox(
         "Select Dataset",
         [

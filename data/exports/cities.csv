@@ -4,7 +4,4 @@ id,city_name,country,latitude,longitude,population,timezone
 3,Tokyo,JP,35.6895,139.69171,,Asia/Tokyo
 4,London,GB,51.50853,-0.12574,,Europe/London
 5,Paris,FR,48.85341,2.3488,,Europe/Paris
-6,Lahore,PK,31.558,74.35071,,Asia/Karachi
-7,Berlin,DE,52.52437,13.41053,,Europe/Berlin
-8,Bangalore Town,PK,24.8717,67.0839,,Asia/Karachi
-9,Solan,IN,30.90908,77.10869,,Asia/Kolkata
+6,Shimla,IN,31.10442,77.16662,,Asia/Kolkata
