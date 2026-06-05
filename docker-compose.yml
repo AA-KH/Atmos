@@ -1,0 +1,11 @@
+services:
+  atmos:
+    build: .
+    container_name: atmos
+    ports:
+      - "8501:8501"
+
+    volumes:
+      - ./database:/app/database
+
+    restart: unless-stopped
